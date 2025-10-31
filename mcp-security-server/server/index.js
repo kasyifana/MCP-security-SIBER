@@ -16,7 +16,7 @@ const submissionSchema = Joi.object({
   dependencies: Joi.object().required(),
 });
 
-app.get('/mcp/handshake', (req, res) => {
+app.get('/api/handshake', (req, res) => {
   res.json({
     name: "mcp-security-server",
     version: "1.0.0",
@@ -25,7 +25,7 @@ app.get('/mcp/handshake', (req, res) => {
   });
 });
 
-app.post('/mcp/submit', async (req, res) => {
+app.post('/api/submit', async (req, res) => {
   const { error, value } = submissionSchema.validate(req.body);
 
   if (error) {
@@ -49,7 +49,7 @@ app.get('/api/job/:id', async (req, res) => {
     return res.status(404).json({ error: 'Job not found' });
   }
 
-  const reportPath = path.join(__dirname, '..', 'storage', 'reports', `${job.id}.json`);
+  const reportPath = path.join(__dirname, 'storage', 'reports', `${job.id}.json`);
   try {
     const report = await fs.readJson(reportPath);
     res.json({ job, report });
@@ -74,7 +74,7 @@ app.get('/api/stats', async (req, res) => {
   };
 
   for (const job of jobs) {
-    const reportPath = path.join(__dirname, '..', 'storage', 'reports', `${job.id}.json`);
+    const reportPath = path.join(__dirname, 'storage', 'reports', `${job.id}.json`);
     try {
       const report = await fs.readJson(reportPath);
       if (report.metadata && report.metadata.vulnerabilities && Object.keys(report.metadata.vulnerabilities).length > 0) {

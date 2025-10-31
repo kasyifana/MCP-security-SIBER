@@ -8,6 +8,7 @@ services:
     volumes:
       - ./server:/usr/src/app
       - /usr/src/app/node_modules
+      - ./storage:/usr/src/app/storage
     depends_on:
       - db
       - redis

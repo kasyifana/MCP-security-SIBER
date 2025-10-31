@@ -1,0 +1,14 @@
+{
+  "mcpServers": [
+    {
+      "name": "run_security_audit",
+      "description": "Runs a security audit on a specified project directory. The project must contain a package.json file. The 'project_path' argument should be the full path to the project folder.",
+      "command": "npx",
+      "arguments": [
+        "mcp-security-siber",
+        "run",
+        "{project_path}"
+      ]
+    }
+  ]
+}

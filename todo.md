@@ -40,6 +40,36 @@
 
 ---
 
+## 🤖 Interaksi dengan LLM (mis. GitHub Copilot, Trae)
+
+Proyek ini **tidak bisa dijalankan di dalam LLM**, karena memerlukan lingkungan eksekusi nyata (Node.js, Docker, sistem file). Namun, LLM dapat berperan sebagai **klien** yang berinteraksi dengan API server ini setelah server berjalan.
+
+### Skenario Interaksi
+
+1.  **LLM sebagai Pemicu Audit**:
+    *   **Tugas**: LLM diberi sebuah `package.json` atau daftar dependensi.
+    *   **Aksi LLM**:
+        1.  Membentuk payload JSON yang sesuai dengan format yang dibutuhkan oleh endpoint `/mcp/submit`.
+        2.  Menghasilkan perintah `curl` untuk mengirim payload tersebut ke server yang sedang berjalan (`http://localhost:3000/mcp/submit`).
+        3.  Menyimpan `job_id` yang diterima dari respons server.
+
+2.  **LLM sebagai Penganalisis Hasil**:
+    *   **Tugas**: LLM diberi `job_id` dari audit yang sudah selesai.
+    *   **Aksi LLM**:
+        1.  Menghasilkan perintah `curl` untuk mengambil hasil dari endpoint `/api/job/:id`.
+        2.  Menganalisis respons JSON (seperti `Severity-response.json` atau `no-Severity-response.json`).
+        3.  Menyajikan ringkasan hasil audit kepada pengguna dalam bahasa alami, misalnya: "Ditemukan 3 kerentanan tingkat tinggi pada `lodash`. Disarankan untuk upgrade ke versi `4.17.21`."
+
+### Langkah Implementasi (di sisi LLM/Client)
+
+*   [ ] **Buat Prompt Template**: Mendesain prompt yang jelas bagi LLM untuk mengubah daftar dependensi menjadi payload JSON.
+*   [ ] **Minta LLM API KEY**: minta lah llm api key dari saya jika anda membutuhkan
+
+*   [ ] **Buat Fungsi Parser**: Mengajarkan LLM cara mengekstrak informasi kunci (severity, CVE, rekomendasi) dari JSON hasil audit.
+*   [x] **Simulasi End-to-End**: Melakukan simulasi di mana LLM menerima `package.json`, memicu audit, menunggu, mengambil hasil, dan memberikan penjelasan.
+
+---
+
 ## 🪜 Langkah Pembuatan (Step-by-step)
 
 ### 1. Setup Dasar Proyek
